@@ -6,6 +6,7 @@ const path=require("path")
 const  flash=require("express-flash");
 const connection=require("./model/db")
 const MySQLStore=require("express-mysql-session")(session);
+const userRoute=require("./routes/userRoute");
 
 
 const app=express();
@@ -21,6 +22,9 @@ app.set("view engine","ejs");
 app.use(expressLayout);
 app.set("views", path.join(__dirname, "/views"));
 app.use(express.static("public"))
+
+//
+app.use(express.urlencoded({extended:true}));
 
 // Session store options (optional, defaults are usually fine)
 const sessionStoreOptions = {
@@ -45,19 +49,19 @@ app.use(session({
     }
 }));
 
+app.use(flash());
+
+
+//welcome page
 app.get('/', (req, res) =>  {
-    if (req.session.views) {
-        req.session.views++;
-        res.send(`Views: ${req.session.views}. Expires in: ${(req.session.cookie.maxAge / 1000)}s`);
-    } else {
-        req.session.views = 1;
-        res.send('Welcome to the session demo! Refresh the page.');
-    }
+    res.render("welcome",{title:"Welcome Page"})
 });
 
 
 
 
+
+app.use("/user", userRoute);
 
 
 
