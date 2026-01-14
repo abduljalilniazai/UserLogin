@@ -7,6 +7,9 @@ const  flash=require("express-flash");
 const connection=require("./model/db")
 const MySQLStore=require("express-mysql-session")(session);
 const userRoute=require("./routes/userRoute");
+const adminRoute=require("./routes/adminRoute");
+const passport=require("passport")
+require("./config/passport")(passport)
 
 
 const app=express();
@@ -30,7 +33,7 @@ app.use(express.urlencoded({extended:true}));
 const sessionStoreOptions = {
     clearExpired: true,
     checkExpirationInterval: 900000, // how frequently the store should remove expired sessions (in ms)
-    expiration: 1000*5, // the maximum lifetime of a session (in ms)
+    expiration: 1000*50, // the maximum lifetime of a session (in ms)
     // You can also specify custom schema if needed
 };
 
@@ -43,7 +46,7 @@ app.use(session({
     resave: false, // forces the session to be saved back to the session store
     saveUninitialized: false, // forces an uninitialized session to be saved to the store
     cookie: {
-        maxAge: 1000*5, // cookie expiration time (e.g., 24 hours)
+        maxAge: 1000*50, // cookie expiration time (e.g., 24 hours)
         httpOnly: true, // prevents client-side JavaScript from reading the cookie
         secure: process.env.NODE_ENV === 'production' // ensure secure cookies in production with HTTPS
     }
@@ -51,17 +54,21 @@ app.use(session({
 
 app.use(flash());
 
+//Passport middleware
+app.use(passport.session());
+app.use(passport.initialize())
 
 //welcome page
-app.get('/', (req, res) =>  {
-    res.render("welcome",{title:"Welcome Page"})
-});
+// app.get('/', (req, res) =>  {
+//     res.render("welcome",{title:"Welcome Page"})
+// });
 
 
 
 
 
 app.use("/user", userRoute);
+app.use("/",adminRoute)
 
 
 
