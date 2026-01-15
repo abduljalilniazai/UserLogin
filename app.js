@@ -32,8 +32,8 @@ app.use(express.urlencoded({extended:true}));
 // Session store options (optional, defaults are usually fine)
 const sessionStoreOptions = {
     clearExpired: true,
-    checkExpirationInterval: 900000, // how frequently the store should remove expired sessions (in ms)
-    expiration: 1000*50, // the maximum lifetime of a session (in ms)
+    checkExpirationInterval: 600000, // how frequently the store should remove expired sessions (in ms)
+    expiration: 1000*60, // the maximum lifetime of a session (in ms)
     // You can also specify custom schema if needed
 };
 
@@ -45,8 +45,9 @@ app.use(session({
     store: sessionStore,
     resave: false, // forces the session to be saved back to the session store
     saveUninitialized: false, // forces an uninitialized session to be saved to the store
+    rolling: true,
     cookie: {
-        maxAge: 1000*50, // cookie expiration time (e.g., 24 hours)
+        maxAge: 1000*60, // cookie expiration time (e.g., 24 hours)
         httpOnly: true, // prevents client-side JavaScript from reading the cookie
         secure: process.env.NODE_ENV === 'production' // ensure secure cookies in production with HTTPS
     }
