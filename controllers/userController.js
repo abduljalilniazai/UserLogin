@@ -3,10 +3,10 @@ const bcrypt = require("bcryptjs")
 function initRoute() {
     return {
         login(req, res) {
-            res.render("login", { title: "Our Login Page!" })
+            res.render("auth/login", { title: "Our Login Page!", layout: "layouts/auth" })
         },
         register(req, res) {
-            res.render("register", { title: "Register User Page!" })
+            res.render("auth/register", { title: "Register User Page!", layout:"layouts/auth" })
         },
 
         async registerUser(req, res) {

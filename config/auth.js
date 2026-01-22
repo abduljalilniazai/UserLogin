@@ -8,6 +8,7 @@ module.exports={
     },
     forwardAuthenticated:function(req,res,next){
         if(!req.isAuthenticated()){
+            res.locals.layout = false;
             return next();
         }
         res.redirect("/dashboard")

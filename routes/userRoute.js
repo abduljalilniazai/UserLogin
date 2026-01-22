@@ -3,12 +3,13 @@ const router=express.Router();
 const passport=require("passport")
 
 const getUserController=require("../controllers/userController");
+const { ensureAuthenticated, forwardAuthenticated } = require("../config/auth");
 
 
 
-router.get("/login",getUserController().login);
+router.get("/login",forwardAuthenticated, getUserController().login);
 
-router.get("/register", getUserController().register);
+router.get("/register", forwardAuthenticated, getUserController().register);
 router.post("/register",getUserController().registerUser);
 router.post("/login",(req,res,next)=>{
     passport.authenticate('local',{

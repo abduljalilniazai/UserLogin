@@ -1,18 +1,20 @@
 require("dotenv").config();
-const express=require('express');
-const expressLayout=require("express-ejs-layouts");
-const session=require("express-session");
-const path=require("path")
-const  flash=require("express-flash");
-const connection=require("./model/db")
-const MySQLStore=require("express-mysql-session")(session);
-const userRoute=require("./routes/userRoute");
-const adminRoute=require("./routes/adminRoute");
-const passport=require("passport")
+const express = require('express');
+const expressLayout = require("express-ejs-layouts");
+const session = require("express-session");
+const path = require("path")
+const flash = require("express-flash");
+const connection = require("./model/db")
+const MySQLStore = require("express-mysql-session")(session);
+const userRoute = require("./routes/userRoute");
+const adminRoute = require("./routes/adminRoute");
+const passport = require("passport")
 require("./config/passport")(passport)
 
 
-const app=express();
+const app = express();
+
+
 
 
 
@@ -21,19 +23,22 @@ const app=express();
 
 
 //setting views
-app.set("view engine","ejs");
+app.set("view engine", "ejs");
+
 app.use(expressLayout);
+app.set('layout', 'layouts/main');
+
 app.set("views", path.join(__dirname, "/views"));
 app.use(express.static("public"))
 
 //
-app.use(express.urlencoded({extended:true}));
+app.use(express.urlencoded({ extended: true }));
 
 // Session store options (optional, defaults are usually fine)
 const sessionStoreOptions = {
     clearExpired: true,
     checkExpirationInterval: 600000, // how frequently the store should remove expired sessions (in ms)
-    expiration: 1000*60, // the maximum lifetime of a session (in ms)
+    expiration: 1000 * 60, // the maximum lifetime of a session (in ms)
     // You can also specify custom schema if needed
 };
 
@@ -47,7 +52,7 @@ app.use(session({
     saveUninitialized: false, // forces an uninitialized session to be saved to the store
     rolling: true,
     cookie: {
-        maxAge: 1000*60, // cookie expiration time (e.g., 24 hours)
+        maxAge: 1000 * 60, // cookie expiration time (e.g., 24 hours)
         httpOnly: true, // prevents client-side JavaScript from reading the cookie
         secure: process.env.NODE_ENV === 'production' // ensure secure cookies in production with HTTPS
     }
@@ -69,12 +74,12 @@ app.use(passport.initialize())
 
 
 app.use("/user", userRoute);
-app.use("/",adminRoute)
+app.use("/", adminRoute)
 
 
 
-const port=process.env.port;
+const port = process.env.port;
 
-app.listen(port, "localhost",()=>{
+app.listen(port, "localhost", () => {
     console.log(`Server is listening on port ${port}`)
 })
