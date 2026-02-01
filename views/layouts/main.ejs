@@ -5,10 +5,20 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-   
+    <link rel="stylesheet" href="https://unpkg.com/persian-datepicker/dist/css/persian-datepicker.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://unpkg.com/persian-date/dist/persian-date.min.js"></script>
+    <script src="https://unpkg.com/persian-datepicker/dist/js/persian-datepicker.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/style.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
     <link rel="stylesheet" href="/styles.css">
+
+
     <title>Login Page with Passport</title>
 </head>
 
@@ -18,11 +28,17 @@
     <header class="fixed top-0 right-0 left-0 h-14 bg-slate-900 text-white flex items-center justify-between px-6 z-50">
         <h1 class="font-bold">مکتب خصوصی نیازی افغان</h1>
         <input type="text" placeholder="جستجو..." class="rounded px-3 py-1 text-black w-64">
+        <h1 class="mt-4">Dashboard</h1>
+        <p class="lead mb-3">Welcome <%= name %>
+        </p>
+        <a href="/user/logout" class="btn btn-secondary">Logout</a>
+        <a href="/admin" class="btn btn-secondary">Admin</a>
+
     </header>
 
     <!-- Sidebar -->
     <aside class="fixed top-14 right-0 w-64 bg-slate-800 text-white min-h-screen p-4 space-y-2">
-        <a class="block p-2 rounded hover:bg-slate-700" href="#">داشبورد</a>
+        <a class="block p-2 rounded hover:bg-slate-700" href="/dashboard">داشبورد</a>
         <!-- Students -->
         <div>
             <button onclick="toggleMenu()"
@@ -32,7 +48,7 @@
             </button>
 
             <div id="submenu" class="hidden pr-6 mt-2 space-y-1">
-                <a class="block px-3 py-2 rounded hover:bg-slate-800" href="#">ثبت شاگرد</a>
+                <a class="block px-3 py-2 rounded hover:bg-slate-800" href="/saveStudent">ثبت شاگرد</a>
                 <a class="block px-3 py-2 rounded hover:bg-slate-800" href="#">لیست شاگردان</a>
                 <a class="block px-3 py-2 rounded hover:bg-slate-800" href="#">ثبت فیس شاگرد</a>
             </div>
@@ -49,245 +65,20 @@
         <a class="block p-2 rounded hover:bg-slate-700" href="#">حساب</a>
     </aside>
 
-    <!-- Main Content -->
-    <main class="mr-64 mt-16 p-6">
 
-        <div class="max-w-7xl mx-auto bg-white rounded-lg shadow">
+    <%- body %>
+        <!-- JS -->
+        <script>
+            function toggleMenu() {
+                const menu = document.getElementById('submenu');
+                const arrow = document.getElementById('arrow');
+                menu.classList.toggle('hidden');
+                arrow.classList.toggle('rotate-180');
+            }
+            function resetUploader(wrapperId) {
+                const wrapper = document.getElementById(wrapperId);
 
-            <!-- Header -->
-            <div class="border-b px-6 py-4">
-                <h2 class="text-xl font-bold text-gray-800 text-right">
-                    ثبت مشخصات شاگرد
-                </h2>
-            </div>
-
-            <!-- Form -->
-            <form class="p-6 space-y-6">
-
-                <!-- Row 1 -->
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                    <div>
-                        <label class="form-label">اسم <span class="text-red-500">*</span></label>
-                        <input type="text" class="form-input">
-                    </div>
-                    <div>
-                        <label class="form-label">تخلص</label>
-                        <input type="text" class="form-input">
-                    </div>
-                    <div>
-                        <label class="form-label">ولد <span class="text-red-500">*</span></label>
-                        <input type="text" class="form-input">
-                    </div>
-                    <div>
-                        <label class="form-label">ولدیت <span class="text-red-500">*</span></label>
-                        <input type="text" class="form-input">
-                    </div>
-                </div>
-
-                <!-- Row 2 -->
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                    <div>
-                        <label class="form-label">نمبر اساس <span class="text-red-500">*</span></label>
-                        <input type="text" class="form-input">
-                    </div>
-                    <div>
-                        <label class="form-label">تاریخ تولد <span class="text-red-500">*</span></label>
-                        <input type="date" class="form-input">
-                    </div>
-                    <div>
-                        <label class="form-label">جنسیت</label>
-                        <select class="form-input">
-                            <option>ذکور</option>
-                            <option>اناث</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="form-label">نمبر تذکره <span class="text-red-500">*</span></label>
-                        <input type="text" class="form-input">
-                    </div>
-                </div>
-
-                <!-- Row 3 -->
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                    <div>
-                        <label class="form-label">زبان مادری</label>
-                        <select class="form-input">
-                            <option>دری</option>
-                            <option>پشتو</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="form-label">موقعیت اصلی</label>
-                        <input type="text" class="form-input">
-                    </div>
-                    <div>
-                        <label class="form-label">موقعیت فعلی <span class="text-red-500">*</span></label>
-                        <input type="text" class="form-input">
-                    </div>
-                    <div>
-                        <label class="form-label">شماره والدین 1 <span class="text-red-500">*</span></label>
-                        <input type="text" class="form-input">
-                    </div>
-                </div>
-
-                <!-- Row 4 -->
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                    <div>
-                        <label class="form-label">شماره والدین 2</label>
-                        <input type="text" class="form-input">
-                    </div>
-                    <div>
-                        <label class="form-label">اقارب نزدیک</label>
-                        <select class="form-input">
-                            <option>برادر</option>
-                            <option>کاکا</option>
-                            <option>خاله</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="form-label">اسم اقارب نزدیک</label>
-                        <input type="text" class="form-input">
-                    </div>
-                    <div>
-                        <label class="form-label">صنف <span class="text-red-500">*</span></label>
-                        <select class="form-input"></select>
-                    </div>
-                </div>
-
-                <!-- Fees -->
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                    <div>
-                        <label class="form-label">فیس سالانه <span class="text-red-500">*</span></label>
-                        <input type="number" class="form-input">
-                    </div>
-                    <div>
-                        <label class="form-label">فیس ترانسپورت</label>
-                        <input type="number" class="form-input">
-                    </div>
-                    <div>
-                        <label class="form-label">تعداد ماه در سال <span class="text-red-500">*</span></label>
-                        <input type="number" class="form-input">
-                    </div>
-                    <div class="flex items-center gap-2 mt-6">
-                        <input type="checkbox" class="w-4 h-4">
-                        <label class="text-sm">رایگان</label>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-
-                    <!-- Tazkira Upload -->
-                    <!-- تذکره -->
-                    <div>
-                        <label class="block text-sm font-medium mb-1">تذکره</label>
-
-                        <div id="tazkira-wrapper" class="flex items-center gap-2">
-                            <input type="file" class="file-input block w-full text-sm text-gray-600
-               file:py-2 file:px-4
-               file:rounded-md file:border-0
-               file:bg-blue-600 file:text-white
-               hover:file:bg-blue-700
-               border rounded-md" />
-
-                            <button type="button" onclick="resetUploader('tazkira-wrapper')"
-                                class="px-3 py-2 text-sm bg-red-600 text-white rounded-md hover:bg-red-700">
-                                حذف
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Paracha Upload -->
-                    <div>
-                        <label class="block text-sm font-medium mb-1">تذکره</label>
-
-                        <div id="paracha-wrapper" class="flex items-center gap-2">
-                            <input type="file" class="file-input block w-full text-sm text-gray-600
-               file:py-2 file:px-4
-               file:rounded-md file:border-0
-               file:bg-blue-600 file:text-white
-               hover:file:bg-blue-700
-               border rounded-md" />
-
-                            <button type="button" onclick="resetUploader('paracha-wrapper')"
-                                class="px-3 py-2 text-sm bg-red-600 text-white rounded-md hover:bg-red-700">
-                                حذف
-                            </button>
-                        </div>
-                    </div>
-
-
-                    <!-- Attachments Upload -->
-                    <div>
-                        <label class="block text-sm font-medium mb-1">ضمایم</label>
-
-                        <div id="rest-wrapper" class="flex items-center gap-2">
-                            <input type="file" class="file-input block w-full text-sm text-gray-600
-               file:py-2 file:px-4
-               file:rounded-md file:border-0
-               file:bg-blue-600 file:text-white
-               hover:file:bg-blue-700
-               border rounded-md" />
-
-                            <button type="button" onclick="resetUploader('rest-wrapper')"
-                                class="px-3 py-2 text-sm bg-red-600 text-white rounded-md hover:bg-red-700">
-                                حذف
-                            </button>
-                        </div>
-                    </div>
-                    <div class="max-w-xs space-y-3 text-center">
-
-                        <label class="block text-sm font-medium">عکس شاگرد</label>
-
-                        <!-- Image Preview -->
-                        <div class="flex justify-center">
-                            <img id="imagePreview" src="" class="hidden w-32 h-32 rounded-full object-cover border"
-                                alt="Preview">
-                        </div>
-
-                        <!-- Upload -->
-                        <input type="file" id="imageInput" accept="image/*" onchange="previewImage(this)" class="block w-full text-sm text-gray-600
-                file:py-2 file:px-4
-                file:rounded-md file:border-0
-                file:bg-blue-600 file:text-white
-                hover:file:bg-blue-700
-                border rounded-md" />
-
-                        <!-- Remove Button -->
-                        <button type="button" onclick="removeImage()"
-                            class="w-full py-2 text-sm bg-red-600 text-white rounded-md hover:bg-red-700">
-                            حذف عکس
-                        </button>
-
-                    </div>
-
-                </div>
-                <div class="mt-10 flex justify-end gap-3 border-t pt-6 bg-gray-50 -mx-6 -mb-6 p-6 rounded-b-lg">
-                    <button class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-10 rounded-md shadow-sm transition">
-                        ثبت کردن
-                    </button>
-                    <button class="bg-red-500 hover:bg-red-600 text-white py-2 px-10 rounded-md shadow-sm transition">
-                        پاک کردن
-                    </button>
-                </div>
-
-
-            </form>
-        </div>
-
-    </main>
-
-    <!-- JS -->
-    <script>
-        function toggleMenu() {
-            const menu = document.getElementById('submenu');
-            const arrow = document.getElementById('arrow');
-            menu.classList.toggle('hidden');
-            arrow.classList.toggle('rotate-180');
-        }
-        function resetUploader(wrapperId) {
-            const wrapper = document.getElementById(wrapperId);
-
-            wrapper.innerHTML = `
+                wrapper.innerHTML = `
     <input type="file"
       class="file-input block w-full text-sm text-gray-600
              file:py-2 file:px-4
@@ -302,32 +93,53 @@
       حذف
     </button>
   `;
-        }
-        function previewImage(input) {
-            const preview = document.getElementById('imagePreview');
-            const file = input.files[0];
+            }
+            function previewImage(input) {
+                const preview = document.getElementById('imagePreview');
+                const file = input.files[0];
 
-            if (!file) return;
+                if (!file) return;
 
-            if (!file.type.startsWith('image/')) {
-                alert('فقط فایل تصویری مجاز است');
-                input.value = '';
-                return;
+                if (!file.type.startsWith('image/')) {
+                    alert('فقط فایل تصویری مجاز است');
+                    input.value = '';
+                    return;
+                }
+
+                preview.src = URL.createObjectURL(file);
+                preview.classList.remove('hidden');
             }
 
-            preview.src = URL.createObjectURL(file);
-            preview.classList.remove('hidden');
-        }
+            function removeImage() {
+                const input = document.getElementById('imageInput');
+                const preview = document.getElementById('imagePreview');
 
-        function removeImage() {
-            const input = document.getElementById('imageInput');
-            const preview = document.getElementById('imagePreview');
+                input.value = '';
+                preview.src = '';
+                preview.classList.add('hidden');
+            }
 
-            input.value = '';
-            preview.src = '';
-            preview.classList.add('hidden');
-        }
-    </script>
+            // Flash message auto-dismiss after 5 seconds for form validation
+            setTimeout(() => {
+                const alert = document.querySelector('.flash-success');
+                if (alert) alert.remove();
+            }, 3000);
+
+            $(document).ready(function () {
+                $('#birth_date').persianDatepicker({
+                    format: 'YYYY/MM/DD',
+                    initialValue: false,
+                    autoClose: true,
+                    calendar: {
+                        persian: {
+                            locale: 'fa'
+                        }
+                    }
+                });
+            });
+
+
+        </script>
 
 </body>
 

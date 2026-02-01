@@ -1,0 +1,321 @@
+<!-- Main Content -->
+<main class="mr-64 mt-16 p-6">
+
+    <div class="max-w-7xl mx-auto bg-white rounded-lg shadow">
+
+        <!-- Header -->
+        <div class="border-b px-6 py-4">
+            <h2 class="text-xl font-bold text-gray-800 text-right">
+                ثبت مشخصات شاگرد
+            </h2>
+        </div>
+
+        <div>
+            <!-- Flash Messages -->
+            <% if (success) { %>
+                <div
+                    class="flash-success mb-4 flex items-center justify-between rounded-lg border border-green-300 bg-green-100 px-4 py-3 text-green-800">
+
+                    <div class="flex items-center gap-2">
+                        <!-- Icon -->
+                        <svg class="h-5 w-5 text-green-600" fill="none" stroke="currentColor" stroke-width="2"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                        <span class="text-sm font-medium">
+                            <%= success %>
+                        </span>
+                    </div>
+
+                    <!-- Close Button -->
+                    <button onclick="this.parentElement.remove()"
+                        class="text-green-700 hover:text-green-900 focus:outline-none">
+                        ✕
+                    </button>
+
+                </div>
+                <% } %>
+                <% if (typeof errors != 'undefined' && errors.length > 0) { 
+                    errors.forEach(function(error) { %>
+                        
+                 
+                <div class="flash-success mb-4 flex items-center justify-between rounded-lg border border-red-300 bg-red-100 px-4 py-3 text-red-800">
+
+                    <div class="flex items-center gap-2">
+                        <!-- Icon -->
+                        <svg class="h-5 w-5 text-red-600" fill="none" stroke="currentColor" stroke-width="2"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                        <span class="text-sm font-medium">
+                            <%= error.msg %>
+                        </span>
+                    </div>
+
+                    <!-- Close Button -->
+                    <button onclick="this.parentElement.remove()"
+                        class="text-green-700 hover:text-green-900 focus:outline-none">
+                        ✕
+                    </button>
+
+                </div>
+                <% })
+                } 
+                %>
+        </div>
+        <!-- Form -->
+        <form class="p-6 space-y-6" method="post" action="/registers" enctype="multipart/form-data">
+
+            <!-- Row 1 -->
+            <div class=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6">
+                <div>
+                    <label class="form-label">اسم <span class="text-red-500">*</span></label>
+                    <input type="text" class="w-40 sm:w-40 md:w-40 h-10 px-3 text-base border border-gray-300 rounded "
+                        name="stname" id="stname" value="<%= typeof stname != 'undefined' ? stname : '' %>">
+                </div>
+                <div>
+                    <label class="form-label">تخلص</label>
+                    <input type="text" class="w-40 sm:w-40 md:w-40 h-10 px-3 text-base border border-gray-300 rounded"
+                        name="lname" id="lname" value="<%= typeof lname != 'undefined' ? lname : '' %>">
+                </div>
+                <div>
+                    <label class="form-label">ولد <span class="text-red-500">*</span></label>
+                    <input type="text" class="w-40 sm:w-40 md:w-40 h-10 px-3 text-base border border-gray-300 rounded"
+                        name="fname" id="fname" value="<%= typeof fname != 'undefined' ? fname : '' %>">
+                </div>
+                <div>
+                    <label class="form-label">ولدیت <span class="text-red-500">*</span></label>
+                    <input type="text" class="w-40 sm:w-40 md:w-40 h-10 px-3 text-base border border-gray-300 rounded"
+                        name="gname" id="gname" value="<%= typeof gname != 'undefined' ? gname : '' %>">
+                </div>
+                <div>
+                    <label class="form-label">نمبر اساس <span class="text-red-500"></span></label>
+                    <input type="text" class=" w-40 sm:w-40 md:w-40 h-10 px-3 text-base border border-gray-300 rounded"
+                        name="id_num" id="id_num" value="<%= typeof id_num != 'undefined' ? id_num : '' %>">
+                </div>
+                <div>
+                    <label class="form-label">تاریخ تولد <span class="text-red-500">*</span></label>
+                    <input type="text" id="birth_date"
+                        class="w-40 sm:w-40 md:w-40 h-10 px-3 text-base border border-gray-300 rounded"
+                        name="birth_date" id="birth_date" value="<%= typeof birth_date != 'undefined' ? birth_date : '' %>">
+                </div>
+
+            </div>
+
+            <!-- Row 2 -->
+            <div class="grid grid-cols-1 md:grid-cols-6 gap-4">
+
+                <div>
+                    <label class="form-label">جنسیت</label>
+                    <select class="w-40 sm:w-40 md:w-40 h-10 px-3 text-base border border-gray-300 rounded"
+                        name="gender" id="gender">
+                        <option>ذکور</option>
+                        <option>اناث</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="form-label">نمبر تذکره <span class="text-red-500">*</span></label>
+                    <input type="text" class="w-40 sm:w-40 md:w-40 h-10 px-3 text-base border border-gray-300 rounded"
+                        name="tazkira_num" id="tazkira_num" value="<%= typeof tazkira_num != 'undefined' ? tazkira_num : '' %>">
+                </div>
+                <div>
+                    <label class="form-label">زبان مادری</label>
+                    <select class="w-40 sm:w-40 md:w-40 h-10 px-3 text-base border border-gray-300 rounded"
+                        name="mother_lang" id="mother_lang">
+                        <option>دری</option>
+                        <option>پشتو</option>
+                        <option>ازبکی </option>
+                    </select>
+                </div>
+                <div>
+                    <label class="form-label">موقعیت اصلی</label>
+                    <input type="text" class="w-40 sm:w-40 md:w-40 h-10 px-3 text-base border border-gray-300 rounded"
+                        name="origin_location" id="origin_location" value="<%= typeof origin_location != 'undefined' ? origin_location : '' %>">
+                </div>
+                <div>
+                    <label class="form-label">موقعیت فعلی <span class="text-red-500">*</span></label>
+                    <input type="text" class="w-40 sm:w-40 md:w-40 h-10 px-3 text-base border border-gray-300 rounded"
+                        name="current_location" id="current_location" value="<%= typeof current_location != 'undefined' ? current_location : '' %>">
+                </div>
+                <div>
+                    <label class="form-label">شماره والدین 1 <span class="text-red-500">*</span></label>
+                    <input type="text" class="w-40 sm:w-40 md:w-40 h-10 px-3 text-base border border-gray-300 rounded"
+                        name="parent_num1" id="parent_num1" value="<%= typeof parent_num1 != 'undefined' ? parent_num1 : '' %>">
+                </div>
+            </div>
+
+            <!-- Row 3 -->
+            <div class="grid grid-cols-1 md:grid-cols-6 gap-4">
+                <div>
+                    <label class="form-label">شماره والدین 2</label>
+                    <input type="text" class="w-40 sm:w-40 md:w-40 h-10 px-3 text-base border border-gray-300 rounded"
+                        name="parent_num2" id="parent_num2" value="<%= typeof parent_num2 != 'undefined' ? parent_num2 : '' %>">
+                </div>
+                <div>
+                    <label class="form-label">برادر</label>
+                    <input type="text" class="w-40 sm:w-40 md:w-40 h-10 px-3 text-base border border-gray-300 rounded"
+                        name="brother" id="brother" value="<%= typeof brother != 'undefined' ? brother : '' %>">
+                </div>
+                <div>
+                    <label class="form-label">کاکا</label>
+                    <input type="text" class="w-40 sm:w-40 md:w-40 h-10 px-3 text-base border border-gray-300 rounded"
+                        name="uncle" id="uncle" value="<%= typeof uncle != 'undefined' ? uncle : '' %>">
+                </div>
+                <div>
+                    <label class="form-label">ماما</label>
+                    <input type="text" class="w-40 sm:w-40 md:w-40 h-10 px-3 text-base border border-gray-300 rounded"
+                        name="maternal_uncle" id="maternal_uncle" value="<%= typeof maternal_uncle != 'undefined' ? maternal_uncle : '' %>">
+                </div>
+
+
+                <div>
+                    <label class="form-label">صنف <span class="text-red-500">*</span></label>
+                    <select class="w-40 sm:w-40 md:w-40 h-10 px-3 text-base border border-gray-300 rounded" name="class"
+                        id="class">
+                        <option>اول ابتدایی</option>
+                        <option>دوم ابتدایی</option>
+                        <option>سوم ابتدایی</option>
+                        <option>چهارم ابتدایی</option>
+                        <option>پنجم ابتدایی</option>
+                        <option>ششم ابتدایی</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="form-label">فیس سالانه <span class="text-red-500">*</span></label>
+                    <input type="number" class="w-40 sm:w-40 md:w-40 h-10 px-3 text-base border border-gray-300 rounded"
+                        name="annual_fee" id="annual_fee" value="<%= typeof annual_fee != 'undefined' ? annual_fee : '' %>">
+                </div>
+
+            </div>
+
+
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                <div>
+                    <label class="form-label">فیس ترانسپورت</label>
+                    <input type="number" class="w-40 sm:w-40 md:w-40 h-10 px-3 text-base border border-gray-300 rounded"
+                        name="transport_fee" id="transport_fee" value="<%= typeof transport_fee != 'undefined' ? transport_fee : '' %>">
+                </div>
+                <div>
+                    <label class="form-label">تعداد ماه در سال <span class="text-red-500">*</span></label>
+                    <input type="number" class="w-40 sm:w-40 md:w-40 h-10 px-3 text-base border border-gray-300 rounded"
+                        name="months_in_year" id="months_in_year" value="<%= typeof months_in_year != 'undefined' ? months_in_year : '' %>">
+                </div>
+                <div class="flex items-center gap-2">
+                    <input type="checkbox" class="w-4 h-4">
+                    <label class="text-sm">رایگان</label>
+                </div>
+
+
+
+
+
+
+
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
+                <!-- Tazkira Upload -->
+                <!-- تذکره -->
+                <div>
+                    <label class="block text-sm font-medium mb-1">تذکره</label>
+
+                    <div id="tazkira-wrapper" class="flex items-center gap-2">
+                        <input type="file" name="Tazkira" class="w-40 sm:w-40 md:w-80 file-input block text-sm text-gray-600
+               file:py-2 file:px-4
+               file:rounded-md file:border-0
+               file:bg-blue-600 file:text-white
+               hover:file:bg-blue-700
+               border rounded-md" />
+
+                        <button type="button" onclick="resetUploader('tazkira-wrapper')"
+                            class="px-3 py-2 text-sm bg-red-600 text-white rounded-md hover:bg-red-700">
+                            حذف
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Paracha Upload -->
+                <div>
+                    <label class="block text-sm font-medium mb-1">سه پارچه</label>
+
+                    <div id="paracha-wrapper" class="flex items-center gap-2">
+                        <input type="file" name="Paracha" class="file-input block w-full text-sm text-gray-600
+               file:py-2 file:px-4
+               file:rounded-md file:border-0
+               file:bg-blue-600 file:text-white
+               hover:file:bg-blue-700
+               border rounded-md" />
+
+                        <button type="button" onclick="resetUploader('paracha-wrapper')"
+                            class="px-3 py-2 text-sm bg-red-600 text-white rounded-md hover:bg-red-700">
+                            حذف
+                        </button>
+                    </div>
+                </div>
+                <!-- Attachments Upload -->
+                <div>
+                    <label class="block text-sm font-medium mb-1">ضمایم</label>
+
+                    <div id="rest-wrapper" class="flex items-center gap-2">
+                        <input type="file" name="Attachments" class="file-input block w-full text-sm text-gray-600
+               file:py-2 file:px-4
+               file:rounded-md file:border-0
+               file:bg-blue-600 file:text-white
+               hover:file:bg-blue-700
+               border rounded-md" />
+
+                        <button type="button" onclick="resetUploader('rest-wrapper')"
+                            class="px-3 py-2 text-sm bg-red-600 text-white rounded-md hover:bg-red-700">
+                            حذف
+                        </button>
+                    </div>
+                </div>
+                <div>
+
+                </div>
+                <!-- Image Upload -->
+                <div class="space-y-2 text-center">
+                    <label class="block text-sm font-medium">عکس شاگرد</label>
+
+                    <div class="flex justify-center">
+                        <img id="imagePreview" class="hidden w-24 h-24 rounded-full object-cover border" alt="Preview">
+                    </div>
+
+                    <input type="file" name="stImage" id="imageInput" accept="image/*" onchange="previewImage(this)"
+                        class="block w-full text-sm text-gray-600
+                      file:py-2 file:px-3
+                      file:rounded-md file:border-0
+                      file:bg-blue-600 file:text-white
+                      hover:file:bg-blue-700
+                      border rounded-md" />
+
+                    <button type="button" onclick="removeImage()"
+                        class="w-full py-2 text-sm bg-red-600 text-white rounded-md hover:bg-red-700">
+                        حذف عکس
+                    </button>
+                </div>
+
+
+
+
+
+            </div>
+            <!-- Row 3 -->
+            <div class="grid grid-cols-1 md:grid-cols-6 gap-4">
+                <!-- Submit -->
+                <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-md">
+                    ثبت کردن
+                </button>
+
+                <!-- Reset -->
+                <button type="reset" class="w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded-md">
+                    پاک کردن
+                </button>
+
+            </div>
+
+
+
+        </form>
+    </div>
+
+</main>

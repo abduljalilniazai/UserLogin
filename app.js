@@ -38,7 +38,7 @@ app.use(express.urlencoded({ extended: true }));
 const sessionStoreOptions = {
     clearExpired: true,
     checkExpirationInterval: 600000, // how frequently the store should remove expired sessions (in ms)
-    expiration: 1000 * 60, // the maximum lifetime of a session (in ms)
+    expiration: 10000 * 60, // the maximum lifetime of a session (in ms)
     // You can also specify custom schema if needed
 };
 
@@ -52,7 +52,7 @@ app.use(session({
     saveUninitialized: false, // forces an uninitialized session to be saved to the store
     rolling: true,
     cookie: {
-        maxAge: 1000 * 60, // cookie expiration time (e.g., 24 hours)
+        maxAge: 10000 * 60, // cookie expiration time (e.g., 24 hours)
         httpOnly: true, // prevents client-side JavaScript from reading the cookie
         secure: process.env.NODE_ENV === 'production' // ensure secure cookies in production with HTTPS
     }
@@ -63,6 +63,12 @@ app.use(flash());
 //Passport middleware
 app.use(passport.session());
 app.use(passport.initialize())
+
+app.use((req, res, next) => {
+    res.locals.success = req.flash("success");
+    res.locals.error = req.flash("error");
+    next();
+});
 
 //welcome page
 // app.get('/', (req, res) =>  {

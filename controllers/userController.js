@@ -17,8 +17,8 @@ function initRoute() {
                 req.flash("name", name);
                 req.flash("email", email);
                 req.flash("password", password);
-                req.flash("password2")
-                res.render("register")
+                req.flash("password2", password2);
+                return res.render("auth/register", { title: "Register User Page!", layout:"layouts/auth" })
             }
             if (password.length < 6) {
                 req.flash("error", "Password length should be at least 6 characters!");
@@ -26,7 +26,7 @@ function initRoute() {
                 req.flash("email", email);
                 req.flash("password", password);
                 req.flash("password2", password2);
-                res.render("register")
+                return res.render("auth/register", { title: "Register User Page!", layout:"layouts/auth" })
             }
             if (password != password2) {
                 req.flash("error", "Password does not match!");
@@ -34,7 +34,7 @@ function initRoute() {
                 req.flash("email", email);
                 req.flash("password", password);
                 req.flash("password2", password2);
-                res.render("register")
+                return res.render("auth/register", { title: "Register User Page!", layout:"layouts/auth" })
             }
 
             try {
@@ -48,7 +48,7 @@ function initRoute() {
                     req.flash("email", email);
                     req.flash("password", password);
                     req.flash("password2", password2);
-                    res.render("register")
+                    return res.render("auth/register", { title: "Register User Page!", layout:"layouts/auth" })
 
                 } else {
                     // console.log("User not found")
