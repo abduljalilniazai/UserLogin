@@ -12,7 +12,7 @@
 
         <div>
             <!-- Flash Messages -->
-            <% if (success) { %>
+            <% if (success_msg !='') { %>
                 <div
                     class="flash-success mb-4 flex items-center justify-between rounded-lg border border-green-300 bg-green-100 px-4 py-3 text-green-800">
 
@@ -23,7 +23,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
                         </svg>
                         <span class="text-sm font-medium">
-                            <%= success %>
+                            <%= success_msg %>
                         </span>
                     </div>
 
@@ -307,7 +307,7 @@
                 </button>
 
                 <!-- Reset -->
-                <button type="reset" class="w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded-md">
+                <button type="reset" onclick="clearAll()" class="w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded-md">
                     پاک کردن
                 </button>
 
@@ -319,3 +319,18 @@
     </div>
 
 </main>
+
+
+<button onclick="clearAll()">Clear</button>
+
+<script>
+function clearAll() {
+  document.querySelectorAll("input, textarea, select").forEach(el => {
+    if (el.type === "checkbox" || el.type === "radio") {
+      el.checked = false;
+    } else {
+      el.value = "";
+    }
+  });
+}
+</script>

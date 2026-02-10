@@ -2,7 +2,7 @@ const conn = require('../model/db');
 function initAdminRoute() {
     return {
         saveStudentInfo(req, res) {
-            res.render('admin/saveStudent', { title: 'Register Student',layout:"layouts/main", name: req.user.name });
+            res.render('admin/saveStudent', { title: 'Register Student', layout: "layouts/main", name: req.user.name });
         },
         registerStudent(req, res) {
             let errors = [];
@@ -21,7 +21,7 @@ function initAdminRoute() {
                 birth_date,
                 gender,
                 tazkira_num,
-                mother_lang,    
+                mother_lang,
                 origin_location,
                 current_location,
                 parent_num1,
@@ -34,21 +34,6 @@ function initAdminRoute() {
                 transport_fee,
                 months_in_year
             } = req.body;
-
-            //Data Validation can be added here
-            if (!stname || !lname || !fname || !id_num || !birth_date || 
-                !gender || !mother_lang || !origin_location || !current_location ||
-                !parent_num1 || !parent_num2 || !brother || !uncle || !maternal_uncle || !class_name || !annual_fee || !months_in_year) {
-                
-                errors.push({ msg: 'لطفاً تمام فیلدهای الزامی را پر کنید.' });
-                
-            }
-            if(errors.length > 0){
-                return res.render('admin/saveStudent', { title: 'Register Student', layout: "layouts/main", name: req.user.name, errors,
-                    stname, lname, fname, gname, id_num, birth_date, gender, tazkira_num, mother_lang, origin_location, current_location,
-                    parent_num1, parent_num2, brother, uncle, maternal_uncle, class_name, annual_fee, transport_fee, months_in_year
-                });
-            }
 
             // 3️⃣ checkbox (free)
             const is_free = req.body.free ? 1 : 0;
@@ -67,6 +52,27 @@ function initAdminRoute() {
             const attachments_files = req.files.Attachments
                 ? req.files.Attachments.map(file => file.filename).join(',')
                 : null;
+
+            //Data Validation can be added here
+            if (!stname || !lname || !fname || !id_num || !birth_date ||
+                !gender || !mother_lang || !origin_location || !current_location ||
+                !parent_num1 || !parent_num2 || !brother || !uncle || !maternal_uncle || !class_name || !annual_fee || !months_in_year ||
+                !student_photo || !tazkira_file || !paracha_file || !attachments_files) {
+
+                errors.push({ msg: 'لطفاً تمام فیلدهای الزامی را پر کنید.' });
+
+            }
+            if (errors.length > 0) {
+                return res.render('admin/saveStudent', {
+                    title: 'Register Student', layout: "layouts/main", name: req.user.name, errors,
+                    stname, lname, fname, gname, id_num, birth_date, gender, tazkira_num, mother_lang, origin_location, current_location,
+                    parent_num1, parent_num2, brother, uncle, maternal_uncle, class_name, annual_fee, transport_fee, months_in_year
+                });
+            }
+
+
+
+
 
             // 5️⃣ insert query
             const sql = `
@@ -119,11 +125,59 @@ function initAdminRoute() {
 
 
             });
-            req.flash('success', `شاگرد بنام  موفقانه ثبت گردید.`);
+            req.flash('success_msg', `شاگرد بنام ${stname} موفقانه ثبت گردید.`);
             res.redirect('/saveStudent');
 
-        }
+        },
 
+        /* GET students with pagination + search + class filter */
+        listStudents(req, res) {
+            const search = req.query.search || "";
+            const searchBy = req.query.searchBy || "first_name";
+            const className = req.query.class || "";
+
+            let whereClause = "WHERE 1=1";
+            let params = [];
+
+            // 🔍 Search filter
+            if (search) {
+                whereClause += ` AND ${searchBy} LIKE ?`;
+                params.push(`%${search}%`);
+            }
+
+            // 🎓 Class filter
+            if (className) {
+                whereClause += " AND class_name = ?";
+                params.push(className);
+            }
+
+                        const sql = `
+                                SELECT
+                                id,
+                                first_name, father_name, father_job,
+                                base_number,current_address,
+                                parent_phone_1, parent_phone_2,
+                                class_name,
+                                student_photo AS img,
+                                DATE_FORMAT(created_at, '%Y-%m-%d') AS date
+                                FROM students
+                                ${whereClause}
+                                ORDER BY id DESC
+                                LIMIT 5
+                          `;
+
+            conn.query(sql, params, (err, rows) => {
+                if (err) {
+                    req.flash('error', 'خطا در بازیابی داده‌ها');
+                }else {
+                    req.flash('success_msg', `شاگردان ${rows.length} عدد با موفقیت بازیابی گردید.`);
+                    res.render('admin/studentList', { title: 'Students List', layout: "layouts/main", students: rows, name: req.user.name });
+                
+                }
+            });
+            
+            //res.render('admin/studentList', { title: 'Students List', layout: "layouts/main", name: req.user.name });
+        }
     }
 }
 module.exports = initAdminRoute;

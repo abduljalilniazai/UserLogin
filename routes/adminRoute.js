@@ -73,4 +73,6 @@ router.post(
  * By combining req.logout() and req.session.destroy(), you ensure that the user's authentication status is cleared and the corresponding session data is completely removed from the server, effectively terminating the session.
  */
 
+router.get('/studentList', ensureAuthenticated, adminController().listStudents);
+
 module.exports = router;

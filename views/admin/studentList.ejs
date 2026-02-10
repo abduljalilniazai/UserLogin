@@ -1,0 +1,142 @@
+<!-- Card -->
+<main class="mr-64 mt-16 p-6">
+    <div class="bg-white rounded-lg shadow p-6">
+
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-4">
+            <h1 class="text-2xl font-bold">لیست شاگردان</h1>
+        </div>
+        <!-- Filter & Search -->
+        <div class="flex flex-wrap items-center gap-4 mb-4">
+            <!-- Search Input -->
+            <input type="text" placeholder="جستجو ..."
+                class="w-64 border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-300">
+            <!-- Search Options -->
+            <div class="flex items-center gap-6">
+                <label class="flex items-center gap-1 cursor-pointer">
+                    <input type="radio" name="searchBy" value="name" checked>
+                    <span>اسم</span>
+                </label>
+
+                <label class="flex items-center gap-1 cursor-pointer">
+                    <input type="radio" name="searchBy" value="reg">
+                    <span>نمبر اساس</span>
+                </label>
+
+                <label class="flex items-center gap-1 cursor-pointer">
+                    <input type="radio" name="searchBy" value="phone">
+                    <span>شماره تماس</span>
+                </label>
+            </div>
+            <!-- Class Filter -->
+            <select
+                class="w-48 border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-300">
+                <option value="">همه صنوف</option>
+                <option>نرسری الف</option>
+                <option>آماده گی الف</option>
+                <option>اول الف</option>
+            </select>
+
+
+        </div>
+
+        <!-- Table -->
+        <div class="overflow-x-auto">
+            <table class="w-full border border-gray-300 text-sm text-center">
+                <thead class="bg-gray-800 text-white">
+                    <tr>
+                        <th class="p-2">آیدی</th>
+                        <th class="p-2">نمبر اساس</th>
+                        <th class="p-2">اسم</th>
+                        <th class="p-2">ولد</th>
+                        <th class="p-2">ولدیت</th>
+                        <th class="p-2">صنف</th>
+                        <th class="p-2">عکس</th>
+                        <th class="p-2">شماره تماس والدین</th>
+                        <th class="p-2">شماره تماس والدین۲</th>
+                        <th class="p-2">تاریخ شمولیت</th>
+                        <th class="p-2">عملکرد</th>
+                    </tr>
+                </thead>
+
+                <tbody id="tableBody" class="divide-y">
+                    <!-- Rows inserted by JS -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="flex justify-center items-center gap-2 mt-4" id="pagination"></div>
+
+    </div>
+</main>
+
+
+<script>
+    const students = [
+        { id: 1, reg: 10, name: "وحیده", father: "wahid", province: "اصف", class: "نرسری الف", phone: "0778855664", date: "1404/10/07", img: "https://i.pravatar.cc/40?img=1" },
+        { id: 2, reg: 11, name: "اسد", father: "برهان", province: "امین", class: "آماده گی الف", phone: "0789663322", date: "1404/10/08", img: "https://i.pravatar.cc/40?img=2" },
+        { id: 3, reg: 15, name: "احمد", father: "عمر", province: "کمال", class: "اول الف", phone: "0745663399", date: "1404/10/16", img: "https://i.pravatar.cc/40?img=3" },
+        { id: 4, reg: 16, name: "عثمان", father: "غنی", province: "امین", class: "آماده گی الف", phone: "0745491745", date: "1404/10/16", img: "https://i.pravatar.cc/40?img=4" },
+        { id: 5, reg: 17, name: "علی", father: "کریم", province: "بلخ", class: "اول الف", phone: "0789001122", date: "1404/10/18", img: "https://i.pravatar.cc/40?img=5" },
+        { id: 6, reg: 18, name: "زینب", father: "ناصر", province: "کابل", class: "نرسری ب", phone: "0799887766", date: "1404/10/19", img: "https://i.pravatar.cc/40?img=6" },
+    ];
+
+    const rowsPerPage = 4;
+    let currentPage = 1;
+
+    function renderTable() {
+        const tbody = document.getElementById("tableBody");
+        tbody.innerHTML = "";
+
+        const start = (currentPage - 1) * rowsPerPage;
+        const end = start + rowsPerPage;
+
+        students.slice(start, end).forEach(s => {
+            tbody.innerHTML += `
+      <tr class="hover:bg-gray-100">
+        <td class="p-2">${s.id}</td>
+        <td class="p-2">${s.reg}</td>
+        <td class="p-2">${s.name}</td>
+        <td class="p-2">${s.father}</td>
+        <td class="p-2">${s.province}</td>
+        <td class="p-2">${s.class}</td>
+        <td class="p-2">
+          <img src="${s.img}" class="w-10 h-10 rounded mx-auto">
+        </td>
+        <td class="p-2">${s.phone}</td>
+        <td class="p-2">${s.phone2}</td>
+        <td class="p-2">${s.date}</td>
+        <td class="p-2 flex justify-center gap-1">
+          <button class="bg-blue-500 text-white px-2 py-1 rounded">👁</button>
+          <button class="bg-red-500 text-white px-2 py-1 rounded">🗑</button>
+        </td>
+      </tr>
+    `;
+        });
+    }
+
+    function renderPagination() {
+        const totalPages = Math.ceil(students.length / rowsPerPage);
+        const pagination = document.getElementById("pagination");
+        pagination.innerHTML = "";
+
+        for (let i = 1; i <= totalPages; i++) {
+            pagination.innerHTML += `
+      <button onclick="goToPage(${i})"
+        class="px-3 py-1 border rounded ${i === currentPage ? 'bg-blue-500 text-white' : 'bg-white'}">
+        ${i}
+      </button>
+    `;
+        }
+    }
+
+    function goToPage(page) {
+        currentPage = page;
+        renderTable();
+        renderPagination();
+    }
+
+    renderTable();
+    renderPagination();
+</script>
